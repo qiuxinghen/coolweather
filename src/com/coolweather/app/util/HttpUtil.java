@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -14,12 +16,13 @@ public class HttpUtil {
 
 	public static void sendHttpRequest(final String address, final HttpCallbackListener listener) {
 		new Thread(new Runnable() {
+
 			@Override
 			public void run() {
-				HttpsURLConnection connection = null;
+				HttpURLConnection connection = null;
 				try {
 					URL url = new URL(address);
-					connection = (HttpsURLConnection) url.openConnection();
+					connection = (HttpURLConnection) url.openConnection();
 					connection.setRequestMethod("GET");
 					connection.setConnectTimeout(8000);
 					connection.setReadTimeout(8000);
@@ -42,8 +45,8 @@ public class HttpUtil {
 						connection.disconnect();
 					}
 				}
-
 			}
 		}).start();
 	}
+
 }

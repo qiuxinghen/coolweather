@@ -26,41 +26,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ChooseAreaActivity extends Activity {
-
-	public static final int LEVEL_PROVINCE = 0;
-	public static final int LEVEL_CITY = 0;
-	public static final int LEVEL_COUNTY = 0;
 	
-	private List<String> dataList = new ArrayList<String>();
-	/**
-	 * ʡ�б�
-	 */
-	private List<Province> provinceList;
-	/**
-	 * ���б�
-	 */
-	private List<City> cityList;
-	/**
-	 * ���б�
-	 */
-	private List<County> countyList;
-	/**
-	 * ѡ�е�ʡ��
-	 */
-	private Province selectedProvince;
-	/**
-	 * ѡ�еĳ���
-	 */
-	private City selectedCity;
-	/**
-	 * ѡ�еļ���
-	 */
-	private int currentLevel;
+	public static final int LEVEL_PROVINCE = 0;
+	public static final int LEVEL_CITY = 1;
+	public static final int LEVEL_COUNTY = 2;
 	private ListView listView;
 	private TextView titleText;
+	private List<String> dataList = new ArrayList<String>();
 	private ArrayAdapter<String> adapter;
 	private CoolWeatherDB coolWeatherDB;
-	private ProgressDialog progressDialog;
+	private int currentLevel;
+	private List<Province> provinceList;
+	private Province selectedProvince;
+	private List<City> cityList;
+	private City selectedCity;
+	private List<County> countyList;
+	private ProgressDialog mProgressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +54,14 @@ public class ChooseAreaActivity extends Activity {
 		listView.setAdapter(adapter);
 		coolWeatherDB = CoolWeatherDB.getInstance(this);
 		listView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View view, int index, long arg3) {
-				if (currentLevel == LEVEL_PROVINCE) {
-					selectedProvince = provinceList.get(index);
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if(currentLevel == LEVEL_PROVINCE){
+					selectedProvince = provinceList.get(position);
 					queryCities();
-				} else if (currentLevel == LEVEL_CITY) {
-					selectedCity = cityList.get(index);
+				}else if(currentLevel == LEVEL_CITY){
+					selectedCity = cityList.get(position);
 					queryCounties();
 				}
 			}
@@ -87,32 +69,29 @@ public class ChooseAreaActivity extends Activity {
 		queryProvinces();
 	}
 
-	
-	/**
-	 * ��ѯȫ�����е�ʡ�����ȴ����ݿ��ѯ�����û�в�ѯ����ȥ�������ϲ�ѯ
-	 */
+
 	private void queryProvinces() {
 		provinceList = coolWeatherDB.loadProvinces();
-		if (provinceList.size() > 0) {
+		if(provinceList.size()>0){
 			dataList.clear();
 			for (Province province : provinceList) {
 				dataList.add(province.getProvinceName());
 			}
 			adapter.notifyDataSetChanged();
 			listView.setSelection(0);
-			titleText.setText("�й�");
+			titleText.setText("中国");
 			currentLevel = LEVEL_PROVINCE;
-		} else {
+		}else{
 			queryFromServer(null, "province");
 		}
 	}
-	
-	/**
-	 * ��ѯѡ��ʡ�����е��У����ȴ����ݿ��ѯ�����û�в�ѯ����ȥ�������ϲ�ѯ
-	 */
-	private void queryCities() {
+
+
+
+
+	protected void queryCities() {
 		cityList = coolWeatherDB.loadCities(selectedProvince.getId());
-		if (cityList.size() > 0) {
+		if(cityList.size()>0){
 			dataList.clear();
 			for (City city : cityList) {
 				dataList.add(city.getCityName());
@@ -121,17 +100,14 @@ public class ChooseAreaActivity extends Activity {
 			listView.setSelection(0);
 			titleText.setText(selectedProvince.getProvinceName());
 			currentLevel = LEVEL_CITY;
-		} else {
-			queryFromServer(selectedProvince.getProvinceCode(), "city");
+		}else{
+			queryFromServer(selectedProvince.getProvinceCode(),"city");
 		}
+		
 	}
-	
-	/**
-	 * ��ѯѡ���������е��أ����ȴ����ݿ��ѯ�����û�в�ѯ����ȥ�������ϲ�ѯ
-	 */
-	private void queryCounties() {
+	protected void queryCounties() {
 		countyList = coolWeatherDB.loadCounties(selectedCity.getId());
-		if (countyList.size() > 0) {
+		if(countyList.size()>0){
 			dataList.clear();
 			for (County county : countyList) {
 				dataList.add(county.getCountyName());
@@ -140,94 +116,86 @@ public class ChooseAreaActivity extends Activity {
 			listView.setSelection(0);
 			titleText.setText(selectedCity.getCityName());
 			currentLevel = LEVEL_COUNTY;
-		} else {
-			queryFromServer(selectedCity.getCityCode(), "county");
+		}else{
+			queryFromServer(selectedCity.getCityCode(),"county");
 		}
 	}
-
-	/**
-	 * ���ݴ���Ĵ��ź����ʹӷ������ϲ�ѯʡ�������� 
-	 */
-	private void queryFromServer(final String code, final String type) {
+	
+	private void queryFromServer(String code, final String type) {
 		String address;
-		if (!TextUtils.isEmpty(code)) {
+		if(!TextUtils.isEmpty(code)){
 			address = "http://www.weather.com.cn/data/list3/city" + code + ".xml";
-		} else {
+		}else{
 			address = "http://www.weather.com.cn/data/list3/city.xml";
 		}
 		showProgressDialog();
 		HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
+			
 			@Override
 			public void onFinish(String response) {
 				boolean result = false;
-				if ("province".equals(type)) {
-					result = Utility.handleProvinceResponse(null, response);
-				} else if ("city".equals(type)) {
+				if("province".equals(type)) {
+					result = Utility.handleProvinceResponse(coolWeatherDB, response);
+				} else if("city".equals(type)) {
 					result = Utility.handleCitiesResponse(coolWeatherDB, response, selectedProvince.getId());
-				} else if ("county".equals(type)) {
+				} else if("county".equals(type)){
 					result = Utility.handleCountiesResponse(coolWeatherDB, response, selectedCity.getId());
 				}
-				if (result) {
-					// ͨ��runOnUiThread()�����ص����̴߳����߼�
+				
+				if(result){
 					runOnUiThread(new Runnable() {
 						
 						@Override
 						public void run() {
 							closeProgressDialog();
-							if ("province".equals(type)) {
+							if("province".equals(type)){
 								queryProvinces();
-							} else if ("city".equals(type)) {
+							} else if("city".equals(type)){
 								queryCities();
-							} else if ("county".equals(type)) {
+							}else if("county".equals(type)){
 								queryCounties();
 							}
 						}
+
 					});
 				}
 			}
 			
 			@Override
 			public void onError(Exception e) {
-				// ͨ��runOnUiThread()�����ص����̴߳����߼�
 				runOnUiThread(new Runnable() {
+					
+					@Override
 					public void run() {
 						closeProgressDialog();
-						Toast.makeText(ChooseAreaActivity.this, "����ʧ��", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ChooseAreaActivity.this, "加载失败", Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
 		});
 	}
 
-	/**
-	 * ��ʾ���ȶԻ���
-	 */
+
 	private void showProgressDialog() {
-		if (progressDialog == null) {
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setMessage("���ڼ���...");
-			progressDialog.setCanceledOnTouchOutside(false);
+		if(mProgressDialog == null){
+			mProgressDialog = new ProgressDialog(this);
+			mProgressDialog.setMessage("正在加载...");
+			mProgressDialog.setCanceledOnTouchOutside(false);
 		}
-		progressDialog.show();
+		mProgressDialog.show();
 	}
 	
-	/**
-	 * �رս��ȶԻ���
-	 */
 	private void closeProgressDialog() {
-		if (progressDialog != null) {
-			progressDialog.dismiss();
+		if(mProgressDialog!=null){
+			mProgressDialog.dismiss();
 		}
 	}
 	
-	/**
-	 * ����Back���������ݵ�ǰ�ļ������жϣ���ʱӦ�÷������б�ʡ�б���ֱ���˳�
-	 */
 	@Override
 	public void onBackPressed() {
-		if (currentLevel == LEVEL_COUNTY) {
+		if(currentLevel == LEVEL_COUNTY) {
 			queryCities();
-		} else if (currentLevel == LEVEL_CITY) {
+		} else if(currentLevel == LEVEL_CITY) {
 			queryProvinces();
 		} else {
 			finish();

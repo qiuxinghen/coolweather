@@ -10,7 +10,11 @@ import android.text.TextUtils;
 public class Utility {
 
 	/**
-	 * �����ʹ�����������ص�ʡ������
+	 * 解析处理服务器返回的省级数据
+	 * 
+	 * @param coolWeatherDB
+	 * @param response
+	 * @return
 	 */
 	public synchronized static boolean handleProvinceResponse(CoolWeatherDB coolWeatherDB, String response) {
 		if (!TextUtils.isEmpty(response)) {
@@ -21,7 +25,6 @@ public class Utility {
 					Province province = new Province();
 					province.setProvinceCode(array[0]);
 					province.setProvinceName(array[1]);
-					// ���������������ݴ洢��Province��
 					coolWeatherDB.saveProvince(province);
 				}
 				return true;
@@ -31,19 +34,23 @@ public class Utility {
 	}
 
 	/**
-	 * �����ʹ�����������ص��м�����
+	 * 解析处理服务器返回的市级数据
+	 * 
+	 * @param coolWeatherDB
+	 * @param response
+	 * @return
 	 */
-	public static boolean handleCitiesResponse(CoolWeatherDB coolWeatherDB, String response, int provinceId) {
+	public static boolean handleCitiesResponse(CoolWeatherDB coolWeatherDB, String response,
+			int provinceId) {
 		if (!TextUtils.isEmpty(response)) {
 			String[] allCities = response.split(",");
 			if (allCities != null && allCities.length > 0) {
-				for (String p : allCities) {
-					String[] array = p.split("\\|");
+				for (String c : allCities) {
+					String[] array = c.split("\\|");
 					City city = new City();
 					city.setCityCode(array[0]);
 					city.setCityName(array[1]);
 					city.setProvinceId(provinceId);
-					// ���������������ݴ洢��City��
 					coolWeatherDB.saveCity(city);
 				}
 				return true;
@@ -51,21 +58,25 @@ public class Utility {
 		}
 		return false;
 	}
-
+	
 	/**
-	 * �����ʹ�����������ص��ؼ�����
+	 * 解析处理服务器返回的县级数据
+	 * 
+	 * @param coolWeatherDB
+	 * @param response
+	 * @return
 	 */
-	public static boolean handleCountiesResponse(CoolWeatherDB coolWeatherDB, String response, int cityId) {
+	public static boolean handleCountiesResponse(CoolWeatherDB coolWeatherDB, String response,
+			int cityId) {
 		if (!TextUtils.isEmpty(response)) {
 			String[] allCounties = response.split(",");
 			if (allCounties != null && allCounties.length > 0) {
-				for (String p : allCounties) {
-					String[] array = p.split("\\|");
+				for (String c : allCounties) {
+					String[] array = c.split("\\|");
 					County county = new County();
 					county.setCountyCode(array[0]);
 					county.setCountyName(array[1]);
 					county.setCityId(cityId);
-					// ���������������ݴ洢��County��
 					coolWeatherDB.saveCounty(county);
 				}
 				return true;
