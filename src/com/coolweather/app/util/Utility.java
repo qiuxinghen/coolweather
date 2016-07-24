@@ -1,7 +1,7 @@
 package com.coolweather.app.util;
 
+import com.coolweather.app.db.CoolWeatherDB;
 import com.coolweather.app.model.City;
-import com.coolweather.app.model.CoolWeatherDB;
 import com.coolweather.app.model.County;
 import com.coolweather.app.model.Province;
 
@@ -10,7 +10,7 @@ import android.text.TextUtils;
 public class Utility {
 
 	/**
-	 * ½âÎöºÍ´¦Àí·þÎñÆ÷·µ»ØµÄÊ¡¼¶Êý¾Ý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½Ê¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public synchronized static boolean handleProvinceResponse(CoolWeatherDB coolWeatherDB, String response) {
 		if (!TextUtils.isEmpty(response)) {
@@ -21,7 +21,7 @@ public class Utility {
 					Province province = new Province();
 					province.setProvinceCode(array[0]);
 					province.setProvinceName(array[1]);
-					// ½«½âÎö³öÀ´µÄÊý¾Ý´æ´¢µ½Province±í
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´æ´¢ï¿½ï¿½Provinceï¿½ï¿½
 					coolWeatherDB.saveProvince(province);
 				}
 				return true;
@@ -31,7 +31,7 @@ public class Utility {
 	}
 
 	/**
-	 * ½âÎöºÍ´¦Àí·þÎñÆ÷·µ»ØµÄÊÐ¼¶Êý¾Ý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static boolean handleCitiesResponse(CoolWeatherDB coolWeatherDB, String response, int provinceId) {
 		if (!TextUtils.isEmpty(response)) {
@@ -43,7 +43,7 @@ public class Utility {
 					city.setCityCode(array[0]);
 					city.setCityName(array[1]);
 					city.setProvinceId(provinceId);
-					// ½«½âÎö³öÀ´µÄÊý¾Ý´æ´¢µ½City±í
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´æ´¢ï¿½ï¿½Cityï¿½ï¿½
 					coolWeatherDB.saveCity(city);
 				}
 				return true;
@@ -53,7 +53,7 @@ public class Utility {
 	}
 
 	/**
-	 * ½âÎöºÍ´¦Àí·þÎñÆ÷·µ»ØµÄÏØ¼¶Êý¾Ý
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static boolean handleCountiesResponse(CoolWeatherDB coolWeatherDB, String response, int cityId) {
 		if (!TextUtils.isEmpty(response)) {
@@ -65,7 +65,7 @@ public class Utility {
 					county.setCountyCode(array[0]);
 					county.setCountyName(array[1]);
 					county.setCityId(cityId);
-					// ½«½âÎö³öÀ´µÄÊý¾Ý´æ´¢µ½County±í
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´æ´¢ï¿½ï¿½Countyï¿½ï¿½
 					coolWeatherDB.saveCounty(county);
 				}
 				return true;

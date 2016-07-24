@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.coolweather.app.R;
+import com.coolweather.app.db.CoolWeatherDB;
 import com.coolweather.app.model.City;
-import com.coolweather.app.model.CoolWeatherDB;
 import com.coolweather.app.model.County;
 import com.coolweather.app.model.Province;
 import com.coolweather.app.util.HttpCallbackListener;
@@ -33,27 +33,27 @@ public class ChooseAreaActivity extends Activity {
 	
 	private List<String> dataList = new ArrayList<String>();
 	/**
-	 * Ê¡ÁÐ±í
+	 * Ê¡ï¿½Ð±ï¿½
 	 */
 	private List<Province> provinceList;
 	/**
-	 * ÊÐÁÐ±í
+	 * ï¿½ï¿½ï¿½Ð±ï¿½
 	 */
 	private List<City> cityList;
 	/**
-	 * ÏØÁÐ±í
+	 * ï¿½ï¿½ï¿½Ð±ï¿½
 	 */
 	private List<County> countyList;
 	/**
-	 * Ñ¡ÖÐµÄÊ¡·Ý
+	 * Ñ¡ï¿½Ðµï¿½Ê¡ï¿½ï¿½
 	 */
 	private Province selectedProvince;
 	/**
-	 * Ñ¡ÖÐµÄ³ÇÊÐ
+	 * Ñ¡ï¿½ÐµÄ³ï¿½ï¿½ï¿½
 	 */
 	private City selectedCity;
 	/**
-	 * Ñ¡ÖÐµÄ¼¶±ð
+	 * Ñ¡ï¿½ÐµÄ¼ï¿½ï¿½ï¿½
 	 */
 	private int currentLevel;
 	private ListView listView;
@@ -89,7 +89,7 @@ public class ChooseAreaActivity extends Activity {
 
 	
 	/**
-	 * ²éÑ¯È«¹úËùÓÐµÄÊ¡£¬ÓÅÏÈ´ÓÊý¾Ý¿â²éÑ¯£¬Èç¹ûÃ»ÓÐ²éÑ¯µ½ÔÙÈ¥·þÎñÆ÷ÉÏ²éÑ¯
+	 * ï¿½ï¿½Ñ¯È«ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ê¡ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½Ñ¯
 	 */
 	private void queryProvinces() {
 		provinceList = coolWeatherDB.loadProvinces();
@@ -100,7 +100,7 @@ public class ChooseAreaActivity extends Activity {
 			}
 			adapter.notifyDataSetChanged();
 			listView.setSelection(0);
-			titleText.setText("ÖÐ¹ú");
+			titleText.setText("ï¿½Ð¹ï¿½");
 			currentLevel = LEVEL_PROVINCE;
 		} else {
 			queryFromServer(null, "province");
@@ -108,7 +108,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	/**
-	 * ²éÑ¯Ñ¡ÖÐÊ¡ÄÚËùÓÐµÄÊÐ£¬ÓÅÏÈ´ÓÊý¾Ý¿â²éÑ¯£¬Èç¹ûÃ»ÓÐ²éÑ¯µ½ÔÙÈ¥·þÎñÆ÷ÉÏ²éÑ¯
+	 * ï¿½ï¿½Ñ¯Ñ¡ï¿½ï¿½Ê¡ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½Ñ¯
 	 */
 	private void queryCities() {
 		cityList = coolWeatherDB.loadCities(selectedProvince.getId());
@@ -127,7 +127,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	/**
-	 * ²éÑ¯Ñ¡ÖÐÊÐÄÚËùÓÐµÄÏØ£¬ÓÅÏÈ´ÓÊý¾Ý¿â²éÑ¯£¬Èç¹ûÃ»ÓÐ²éÑ¯µ½ÔÙÈ¥·þÎñÆ÷ÉÏ²éÑ¯
+	 * ï¿½ï¿½Ñ¯Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½Ñ¯
 	 */
 	private void queryCounties() {
 		countyList = coolWeatherDB.loadCounties(selectedCity.getId());
@@ -146,7 +146,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 
 	/**
-	 * ¸ù¾Ý´«ÈëµÄ´úºÅºÍÀàÐÍ´Ó·þÎñÆ÷ÉÏ²éÑ¯Ê¡ÊÐÏØÊý¾Ý 
+	 * ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½Ä´ï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½Í´Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½Ñ¯Ê¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 	 */
 	private void queryFromServer(final String code, final String type) {
 		String address;
@@ -168,7 +168,7 @@ public class ChooseAreaActivity extends Activity {
 					result = Utility.handleCountiesResponse(coolWeatherDB, response, selectedCity.getId());
 				}
 				if (result) {
-					// Í¨¹ýrunOnUiThread()·½·¨»Øµ½Ö÷Ïß³Ì´¦ÀíÂß¼­
+					// Í¨ï¿½ï¿½runOnUiThread()ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ß³Ì´ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
 					runOnUiThread(new Runnable() {
 						
 						@Override
@@ -188,11 +188,11 @@ public class ChooseAreaActivity extends Activity {
 			
 			@Override
 			public void onError(Exception e) {
-				// Í¨¹ýrunOnUiThread()·½·¨»Øµ½Ö÷Ïß³Ì´¦ÀíÂß¼­
+				// Í¨ï¿½ï¿½runOnUiThread()ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ß³Ì´ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
 				runOnUiThread(new Runnable() {
 					public void run() {
 						closeProgressDialog();
-						Toast.makeText(ChooseAreaActivity.this, "¼ÓÔØÊ§°Ü", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ChooseAreaActivity.this, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 					}
 				});
 			}
@@ -200,19 +200,19 @@ public class ChooseAreaActivity extends Activity {
 	}
 
 	/**
-	 * ÏÔÊ¾½ø¶È¶Ô»°¿ò
+	 * ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½È¶Ô»ï¿½ï¿½ï¿½
 	 */
 	private void showProgressDialog() {
 		if (progressDialog == null) {
 			progressDialog = new ProgressDialog(this);
-			progressDialog.setMessage("ÕýÔÚ¼ÓÔØ...");
+			progressDialog.setMessage("ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½...");
 			progressDialog.setCanceledOnTouchOutside(false);
 		}
 		progressDialog.show();
 	}
 	
 	/**
-	 * ¹Ø±Õ½ø¶È¶Ô»°¿ò
+	 * ï¿½Ø±Õ½ï¿½ï¿½È¶Ô»ï¿½ï¿½ï¿½
 	 */
 	private void closeProgressDialog() {
 		if (progressDialog != null) {
@@ -221,7 +221,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 	
 	/**
-	 * ²¶»ñBack°´¼ü£¬¸ù¾Ýµ±Ç°µÄ¼¶±ðÀ´ÅÐ¶Ï£¬´ËÊ±Ó¦¸Ã·µ»ØÊÐÁÐ±í¡¢Ê¡ÁÐ±í»¹ÊÇÖ±½ÓÍË³ö
+	 * ï¿½ï¿½ï¿½ï¿½Backï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½Ç°ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½Ê±Ó¦ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½Ê¡ï¿½Ð±ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ë³ï¿½
 	 */
 	@Override
 	public void onBackPressed() {
