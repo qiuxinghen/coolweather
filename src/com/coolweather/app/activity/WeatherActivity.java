@@ -61,7 +61,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.switch_city:
 			Intent intent = new Intent(this, ChooseAreaActivity.class);
-			intent.putExtra("frome_weather_activity", true);
+			intent.putExtra("from_weather_activity", true);
 			startActivity(intent);
 			finish();
 			break;
@@ -72,6 +72,8 @@ public class WeatherActivity extends Activity implements OnClickListener {
 			if (!TextUtils.isEmpty(weatherCode)) {
 				queryWeatherInfo(weatherCode);
 			}
+			break;
+		default:
 			break;
 		}
 	}
@@ -99,11 +101,11 @@ public class WeatherActivity extends Activity implements OnClickListener {
 							queryWeatherInfo(weatherCode);
 						}
 					}
-				}else if("weatherCode".equals(type)){
+				} else if ("weatherCode".equals(type)) {
 					Utility.handleWeatherResponse(WeatherActivity.this, response);
-					
+
 					runOnUiThread(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							showWeather();
@@ -116,7 +118,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 			@Override
 			public void onError(Exception e) {
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						publishText.setText("同步失败");
@@ -132,7 +134,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		temp1Text.setText(sp.getString("temp1", ""));
 		temp2Text.setText(sp.getString("temp2", ""));
 		weatherDespText.setText(sp.getString("weather_desp", ""));
-		publishText.setText("今天"+sp.getString("publish_time", "")+"发布");
+		publishText.setText("今天" + sp.getString("publish_time", "") + "发布");
 		currentDateText.setText(sp.getString("current_date", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
